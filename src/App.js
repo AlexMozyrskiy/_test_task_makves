@@ -92,7 +92,7 @@ const uvArr = data.map( item => item.uv )               // новый масси
 const uvMaxValue = Math.max(...uvArr);                  // максимальное значение в массиве uvArr
 const uvMinValue = Math.min(...uvArr);                  // минимальное значение в массиве uvArr
 const uvDef = uvMaxValue - uvMinValue;
-const uvBottomBoundPercentage = `${(100 - (uvTopBound - uvMinValue) * 100 / uvDef)}%`
+const uvBottomBoundPercentage = `${(100 - (uvTopBound - uvMinValue) * 100 / uvDef)}%`       // значения в процентах
 const uvTopBoundPercentage = `${(100 - (uvBottomBound - uvMinValue) * 100 / uvDef)}%`
 // --------------------------- / Границы за которыми окрашиваем графики для uv ---------------------------
 
@@ -120,10 +120,15 @@ for(let e of data) {
 // ---------------------- / Для отображения линии uvTopBound и uvMaxValue пушим в массив data ----------------
 
 export default class Example extends PureComponent {
-  static demoUrl = 'https://codesandbox.io/s/simple-line-chart-kec3v';
 
   render() {
     return (
+      <>
+      <h2 style={{marginLeft: "20px"}}>Спасибо компании "Маквес Групп" за интересное тестовое задание=)</h2>
+      <h3 style={{marginLeft: "20px"}}>Задание: Модифицировать пример <a href="http://recharts.org/en-US/examples/SimpleLineChart">http://recharts.org/en-US/examples/SimpleLineChart</a>&nbsp;
+          Чтобы все участки графиков значение y которых не входят в интервал (avg-stddev, avg+stddev) были подкрашены красным цветом.
+          Где avg - среднее значение
+          stddev - среднеквадратичное отклонение.</h3>
       <ResponsiveContainer width={800} height={500}>
         <LineChart
           width={500}
@@ -172,6 +177,7 @@ export default class Example extends PureComponent {
           <Line type="monotone" dataKey="pvBottomBound" stroke='blue' strokeDasharray="3 3" dot={false} />
         </LineChart>
       </ResponsiveContainer>
+      </ >
     );
   }
 }
