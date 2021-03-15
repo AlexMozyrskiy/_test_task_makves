@@ -84,18 +84,40 @@ const pvDisp = data.reduce((prevResult, item) => {
 const pvStandardDeviation = Math.sqrt(pvDisp);
 // -------------------- / Вычислим стандартное отклонение pv -------------------------------------
 
-// --------------------------- Границы за которыми окрашиваем графики ----------------------------
-const topBound = uvAvg + uvStandardDeviation;         //  нам нужны значения в процентах, эти значения не в процентах, приведем их к процентам для использования в <linearGradient>
-const bottomBound = uvAvg - uvStandardDeviation;
+// --------------------------- Границы за которыми окрашиваем график для uv ----------------------------
+const uvBottomBound = Math.round(uvAvg - uvStandardDeviation);           //  нам нужны значения в процентах, эти значения не в процентах, приведем их к процентам для использования в <linearGradient>
+const uvTopBound = Math.round(uvAvg + uvStandardDeviation);
 
-const uvArr = data.map( item => item.uv )             // новый массив из значений data.uv
-// const uvMinValue = Math.min(...uvArr);                  // минимальное значение в массиве uvArr
+const uvArr = data.map( item => item.uv )               // новый массив из значений data.uv
 const uvMaxValue = Math.max(...uvArr);                  // максимальное значение в массиве uvArr
-// const defMaxMin = uvMaxValue - uvMinValue;            // длина диапозона по оси y
-const topBoundPercentage = `${topBound * 100 / uvMaxValue}%`
-const bottomBoundPercentage = `${bottomBound * 100 / uvMaxValue}%`
-debugger
-// --------------------------- / Границы за которыми окрашиваем графики ---------------------------
+const uvMinValue = Math.min(...uvArr);                  // минимальное значение в массиве uvArr
+const uvDef = uvMaxValue - uvMinValue;
+const uvBottomBoundPercentage = `${(100 - (uvTopBound - uvMinValue) * 100 / uvDef)}%`
+const uvTopBoundPercentage = `${(100 - (uvBottomBound - uvMinValue) * 100 / uvDef)}%`
+// --------------------------- / Границы за которыми окрашиваем графики для uv ---------------------------
+
+
+// --------------------------- Границы за которыми окрашиваем график для pv ----------------------------
+const pvBottomBound = Math.round(pvAvg - pvStandardDeviation);           //  нам нужны значения в процентах, эти значения не в процентах, приведем их к процентам для использования в <linearGradient>
+const pvTopBound = Math.round(pvAvg + pvStandardDeviation);
+
+const pvArr = data.map( item => item.pv )               // новый массив из значений data.pv
+const pvMaxValue = Math.max(...pvArr);                  // максимальное значение в массиве pvArr
+const pvMinValue = Math.min(...pvArr);                  // минимальное значение в массиве pvArr
+const pvDef = pvMaxValue - pvMinValue;
+const pvBottomBoundPercentage = `${(100 - (pvTopBound - pvMinValue) * 100 / pvDef)}%`
+const pvTopBoundPercentage  = `${(100 - (pvBottomBound - pvMinValue) * 100 / pvDef)}%`
+// --------------------------- / Границы за которыми окрашиваем графики для pv ---------------------------
+
+
+// ---------------------- Для отображения линии uvTopBound и uvMaxValue пушим в массив data ------------------
+for(let e of data) {
+  e.uvTopBound = uvTopBound;
+  e.uvBottomBound = uvBottomBound;
+  e.pvTopBound = pvTopBound;
+  e.pvBottomBound = pvBottomBound;
+}
+// ---------------------- / Для отображения линии uvTopBound и uvMaxValue пушим в массив data ----------------
 
 export default class Example extends PureComponent {
   static demoUrl = 'https://codesandbox.io/s/simple-line-chart-kec3v';
@@ -121,18 +143,33 @@ export default class Example extends PureComponent {
           <Legend />
 
           <defs>
-            <linearGradient id="colorUv" x1="0%" y1="0%" x2="0%" y2="100%">
+            <linearGradient id="uvLineColor" x1="0%" y1="0%" x2="0%" y2="1">
               <stop offset="0%" stopColor="red" />
-              <stop offset={bottomBoundPercentage} stopColor="red" />
-              <stop offset={bottomBoundPercentage} stopColor="green" />
-              <stop offset={topBoundPercentage} stopColor="green" />
-              <stop offset={topBoundPercentage} stopColor="red" />
+              <stop offset={uvBottomBoundPercentage} stopColor="red" />
+              <stop offset={uvBottomBoundPercentage} stopColor="green" />
+              <stop offset={uvTopBoundPercentage} stopColor="green" />
+              <stop offset={uvTopBoundPercentage} stopColor="red" />
               <stop offset="100%" stopColor="red" />
             </linearGradient>
           </defs>
 
-          <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-          <Line type="monotone" dataKey="uv" stroke='url(#colorUv)' />
+          <defs>
+            <linearGradient id="pvLineColor" x1="0%" y1="0%" x2="0%" y2="1">
+              <stop offset="0%" stopColor="red" />
+              <stop offset={pvBottomBoundPercentage} stopColor="red" />
+              <stop offset={pvBottomBoundPercentage} stopColor="blue" />
+              <stop offset={pvTopBoundPercentage} stopColor="blue" />
+              <stop offset={pvTopBoundPercentage} stopColor="red" />
+              <stop offset="100%" stopColor="red" />
+            </linearGradient>
+          </defs>
+
+          <Line type="monotone" dataKey="pv" stroke="url(#pvLineColor)" activeDot={{ r: 8 }} />
+          <Line type="monotone" dataKey="uv" stroke='url(#uvLineColor)' />
+          <Line type="monotone" dataKey="uvTopBound" stroke='green' strokeDasharray="3 3" />
+          <Line type="monotone" dataKey="uvBottomBound" stroke='green' strokeDasharray="3 3" />
+          <Line type="monotone" dataKey="pvTopBound" stroke='blue' strokeDasharray="3 3" />
+          <Line type="monotone" dataKey="pvBottomBound" stroke='blue' strokeDasharray="3 3" />
         </LineChart>
       </ResponsiveContainer>
     );
