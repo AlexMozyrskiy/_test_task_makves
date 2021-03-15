@@ -166,10 +166,10 @@ export default class Example extends PureComponent {
 
           <Line type="monotone" dataKey="pv" stroke="url(#pvLineColor)" activeDot={{ r: 8 }} />
           <Line type="monotone" dataKey="uv" stroke='url(#uvLineColor)' />
-          <Line type="monotone" dataKey="uvTopBound" stroke='green' strokeDasharray="3 3" />
-          <Line type="monotone" dataKey="uvBottomBound" stroke='green' strokeDasharray="3 3" />
-          <Line type="monotone" dataKey="pvTopBound" stroke='blue' strokeDasharray="3 3" />
-          <Line type="monotone" dataKey="pvBottomBound" stroke='blue' strokeDasharray="3 3" />
+          <Line type="monotone" dataKey="uvTopBound" stroke='green' strokeDasharray="3 3" dot={false} />
+          <Line type="monotone" dataKey="uvBottomBound" stroke='green' strokeDasharray="3 3" dot={false} />
+          <Line type="monotone" dataKey="pvTopBound" stroke='blue' strokeDasharray="3 3" dot={false} />
+          <Line type="monotone" dataKey="pvBottomBound" stroke='blue' strokeDasharray="3 3" dot={false} />
         </LineChart>
       </ResponsiveContainer>
     );
