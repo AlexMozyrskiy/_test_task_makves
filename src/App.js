@@ -124,6 +124,7 @@ export default class Example extends PureComponent {
   render() {
     return (
       <>
+
       <h2 style={{marginLeft: "20px"}}>Спасибо компании "Маквес Групп" за интересное тестовое задание=)</h2>
       <h3 style={{marginLeft: "20px"}}>Задание: Модифицировать пример <a href="http://recharts.org/en-US/examples/SimpleLineChart">http://recharts.org/en-US/examples/SimpleLineChart</a>&nbsp;
           Чтобы все участки графиков значение y которых не входят в интервал (avg-stddev, avg+stddev) были подкрашены красным цветом.
@@ -177,6 +178,7 @@ export default class Example extends PureComponent {
           <Line type="monotone" dataKey="pvBottomBound" stroke='blue' strokeDasharray="3 3" dot={false} />
         </LineChart>
       </ResponsiveContainer>
+      
       </ >
     );
   }
